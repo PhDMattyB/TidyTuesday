@@ -30,9 +30,6 @@ short_data = season_goals %>%
          yr_start, 
          total_goals)
 
-count = count(season_goals, 
-      penalty_min)
-
 ggplot(data = short_data,
        aes(x = yr_start, 
            y = penalty_min)) +
