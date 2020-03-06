@@ -37,7 +37,7 @@ ggplot(data = short_data,
        aes(x = yr_start, 
            y = penalty_min)) +
     geom_hex()+
-  scale_color_gradient(low = '#59B389', 
+  scale_fill_gradient(low = '#59B389', 
                        high = '#FFADA1')+
   labs(x = 'Year season started', 
        y = 'Penalty minutes') +
