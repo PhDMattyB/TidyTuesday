@@ -12,7 +12,7 @@ dir.create('~/PhD/GitHub/TidyTuesday/Hockey_goals')
 
 setwd('~/PhD/GitHub/TidyTuesday/Hockey_goals')
 
-
+library(wesanderson)
 library(patchwork)
 library(tidyverse)
 
@@ -28,12 +28,23 @@ arrange(penalty_min) %>%
   select(penalty_min) %>% 
   View()
 
+
 ggplot(data = season_goals,
        aes(x = yr_start, 
            y = penalty_min)) +
-  geom_hex() +
+  scale_color_manual(values = wes_palette('Darjeeling1', 
+                                          type = 'continuous'))+
+  geom_hex(aes(col = penalty_min))+  
   labs(x = 'Year season started', 
        y = 'Penalty minutes') +
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 15), 
         axis.text = element_text(size = 15))
+  
+  pal <- wes_palette("Zissou1", 100, type = "continuous")
+  ggplot(heatmap, aes(x = X2, y = X1, fill = value)) +
+    geom_tile() + 
+    scale_fill_gradientn(colours = pal) + 
+    scale_x_discrete(expand = c(0, 0)) +
+    scale_y_discrete(expand = c(0, 0)) + 
+    coord_equal() 
