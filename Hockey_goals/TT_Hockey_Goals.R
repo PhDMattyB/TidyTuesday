@@ -14,12 +14,6 @@ setwd('~/PhD/GitHub/TidyTuesday/Hockey_goals')
 
 
 library(patchwork)
-library(janitor)
-library(devtools)
-library(skimr)
-library(rsed)
-library(data.table)
-library(sjPlot)
 library(tidyverse)
 
 theme_set(theme_bw())
