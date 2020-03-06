@@ -23,18 +23,22 @@ theme_set(theme_bw())
 # top_250 = read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-03/top_250.csv')
 season_goals = read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-03/season_goals.csv')
 
-season_goals %>% 
-arrange(penalty_min) %>%
-  select(penalty_min) %>% 
-  View()
+short_data = season_goals %>% 
+  select(player, 
+         rank,
+         penalty_min, 
+         yr_start, 
+         total_goals)
 
+count = count(season_goals, 
+      penalty_min)
 
-ggplot(data = season_goals,
+ggplot(data = short_data,
        aes(x = yr_start, 
            y = penalty_min)) +
-  # scale_color_manual(values = wes_palette('Darjeeling1', 
-  #                                         type = 'continuous'))+
-  # geom_hex(aes(col = penalty_min))+  
+    geom_hex()+
+  scale_color_gradient(low = '#59B389', 
+                       high = '#FFADA1')+
   labs(x = 'Year season started', 
        y = 'Penalty minutes') +
   theme(panel.grid = element_blank(), 
