@@ -37,11 +37,18 @@ diversity_school = read_csv('https://raw.githubusercontent.com/rfordatascience/t
 ## View a dataset
 View(tuition_cost)
  
+
+# tuition cost per state --------------------------------------------------
+
 ## create a data set for cost per state
 state_cost = tuition_cost %>% 
   group_by(state) %>% 
   summarise(avg_in_tuition = mean(in_state_total),
             avg_out_tuition = mean(out_of_state_total))
+
+ggplot()
+
+# tuition cost and career pay ---------------------------------------------
 
 ## create a dataset for tuition cost and pay in career
 cost_pay = left_join(tuition_cost, 
@@ -57,3 +64,4 @@ cost_pay = left_join(tuition_cost,
          type) %>% 
   na.omit()
 
+View(cost_pay)
