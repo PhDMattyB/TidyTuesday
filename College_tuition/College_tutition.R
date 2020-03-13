@@ -19,8 +19,6 @@ library(data.table)
 library(sjPlot)
 library(tidyverse)
 
-theme_set(theme_bw())
-
 ## Read in the data
 
 tuition_cost = read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-10/tuition_cost.csv')
@@ -59,7 +57,7 @@ plot_date = inner_join(state_cost,
                        map_states) %>% 
   distinct() 
 
-ggplot(data = plot_date) +
+plot1 = ggplot(data = plot_date) +
   geom_polygon(aes(x = long, 
                    y = lat, group = state, 
                    fill = avg_out_tuition), 
@@ -96,6 +94,37 @@ cost_pay = left_join(tuition_cost,
          early_career_pay, 
          mid_career_pay, 
          type) %>% 
-  na.omit()
+  na.omit() %>% 
+  group_by(state)
 
-View(cost_pay)
+cost_pay$state = str_to_lower(cost_pay$state)
+
+cost_data = inner_join(cost_pay, 
+                       map_states) 
+
+
+
+
+
+# plot2 = ggplot(data = cost_pay) +
+#   geom_polygon(aes(x = long, 
+#                    y = lat, 
+#                    group = state, 
+#                    fill = early_career_pay), 
+#                col = 'black') +
+#   scale_fill_gradient2(name = 'Early career pay',
+#                        low = '#155229',
+#                        mid = '#30B85D',
+#                        high = '#3ADE70',
+#                        midpoint = 30000) +
+#   labs(title = 'Projected early career pay')+
+#   theme_minimal()+
+#   theme(panel.grid = element_blank(),
+#         axis.title = element_blank(),
+#         axis.text = element_blank(), 
+#         axis.line = element_blank(), 
+#         plot.title = element_text(face = 'bold', 
+#                                   size = 18,
+#                                   hjust = 0.5),
+#         legend.text = element_text(size = 12), 
+#         legend.title = element_text(size = 14))
