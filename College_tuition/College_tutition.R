@@ -34,11 +34,26 @@ historical_tuition = read_csv('https://raw.githubusercontent.com/rfordatascience
 
 diversity_school = read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-10/diversity_school.csv')
 
+## View a dataset
+View(tuition_cost)
+ 
+## create a data set for cost per state
+state_cost = tuition_cost %>% 
+  group_by(state) %>% 
+  summarise(avg_in_tuition = mean(in_state_total),
+            avg_out_tuition = mean(out_of_state_total))
 
-Tuition_diversity = left_join(tuition_cost, 
-                               diversity_school, 
-                               by = c('name', 'state'))
+## create a dataset for tuition cost and pay in career
+cost_pay = left_join(tuition_cost, 
+                     salary_potential, 
+                     by = c('name', 
+                            'state')) %>% 
+  select(name, 
+         state, 
+         in_state_total, 
+         out_of_state_total, 
+         early_career_pay, 
+         mid_career_pay, 
+         type) %>% 
+  na.omit()
 
-large_data = left_join(Tuition_diversity, 
-                 salary_potential, 
-                 by = c('name', 'state'))
