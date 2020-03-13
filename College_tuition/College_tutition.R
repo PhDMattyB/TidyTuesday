@@ -62,17 +62,25 @@ plot_date = inner_join(state_cost,
 ggplot(data = plot_date) +
   geom_polygon(aes(x = long, 
                    y = lat, group = state, 
-                   fill = avg_in_tuition), 
-               col = 'black')
-
-ggplot() + 
-  geom_polygon( aes(x=long, y=lat, group=group, fill=percentage),
-                color="black" )+
-  scale_fill_gradient2(name= "%",low="white",mid="#A770CD", high="#410066", midpoint = 55)+
-  labs(title= "Women in the US colleges", 
-       subtitle="At least there is 50% of women \n except in North Dakota (49.2%)")+
-  theme_ari()+theme(plot.title = element_text(family=font,face = "bold",
-                                              colour = "#410066", size = 18,  hjust = 0.5))
+                   fill = avg_out_tuition), 
+               col = 'black') +
+  scale_fill_gradient2(name = 'Average tuition',
+                       low = '#155229',
+                       mid = '#30B85D',
+                       high = '#3ADE70',
+                       midpoint = 30000) +
+  labs(title = 'Average out of state tuition')+
+  theme_minimal()+
+  theme(panel.grid = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_blank(), 
+        axis.line = element_blank(), 
+        plot.title = element_text(face = 'bold', 
+                                  size = 18,
+                                  hjust = 0.5),
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 14))
+  
 
 # tuition cost and career pay ---------------------------------------------
 
