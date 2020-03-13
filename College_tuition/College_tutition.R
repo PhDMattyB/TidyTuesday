@@ -94,37 +94,28 @@ cost_pay = left_join(tuition_cost,
          early_career_pay, 
          mid_career_pay, 
          type) %>% 
-  na.omit() %>% 
-  group_by(state)
+  na.omit() 
 
-cost_pay$state = str_to_lower(cost_pay$state)
+View(cost_pay)
 
-cost_data = inner_join(cost_pay, 
-                       map_states) 
+plot2 = ggplot(data = cost_pay)+
+  geom_line(aes(x = out_of_state_total, 
+            y = early_career_pay), 
+            col = '#1283B8')+
+  geom_line(aes(x = out_of_state_total, 
+                y = mid_career_pay),
+            col = '#E00211') +
+  labs(title = 'Relationship between tuition and projected pay',
+       x = 'Amount of tuition',
+       y = 'Amount of pay')+
+  theme_classic()+
+  theme(panel.grid = element_blank(),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        plot.title = element_text(face = 'bold', 
+                                  size = 18,
+                                  hjust = 0.5),
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 14))
 
-
-
-
-
-# plot2 = ggplot(data = cost_pay) +
-#   geom_polygon(aes(x = long, 
-#                    y = lat, 
-#                    group = state, 
-#                    fill = early_career_pay), 
-#                col = 'black') +
-#   scale_fill_gradient2(name = 'Early career pay',
-#                        low = '#155229',
-#                        mid = '#30B85D',
-#                        high = '#3ADE70',
-#                        midpoint = 30000) +
-#   labs(title = 'Projected early career pay')+
-#   theme_minimal()+
-#   theme(panel.grid = element_blank(),
-#         axis.title = element_blank(),
-#         axis.text = element_blank(), 
-#         axis.line = element_blank(), 
-#         plot.title = element_text(face = 'bold', 
-#                                   size = 18,
-#                                   hjust = 0.5),
-#         legend.text = element_text(size = 12), 
-#         legend.title = element_text(size = 14))
+plot1/plot2
