@@ -106,6 +106,7 @@ plot2 = ggplot(data = cost_pay)+
                 y = mid_career_pay),
             col = '#E00211') +
   labs(title = 'Relationship between tuition and projected pay',
+       # subtitle = 'Early career pay in blue \n mid career pay in red',
        x = 'Amount of tuition',
        y = 'Amount of pay')+
   theme_classic()+
