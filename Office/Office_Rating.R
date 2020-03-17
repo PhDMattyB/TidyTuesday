@@ -64,4 +64,4 @@ data_fixed %>%
         plot.subtitle = element_text(face = 'italic', 
                                      size = 14))
 ggsave(plot = last_plot(),
-       'Office_ratings.tiff')
+       'Office_ratings.jpg')
