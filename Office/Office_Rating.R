@@ -28,12 +28,18 @@ data_fixed %>%
   ggplot()+
   geom_point(aes(x = season, 
                  y = imdb_rating, 
-                 col = season))+
+                 col = season),
+             size = 2)+
   geom_smooth(aes(x = season, 
                   y = imdb_rating), 
               method = 'loess', 
-              col = 'black')+
+              col = 'black', 
+              size = 2)+
   labs(x = 'Season', 
        y = 'IMDB Rating')+
   theme_classic()+
-  theme()
+  scale_x_continuous(breaks = seq(1, 9, by = 1))+
+  theme(axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        axis.ticks = element_line(size = 1), 
+        axis.line = element_line(size = 1))
