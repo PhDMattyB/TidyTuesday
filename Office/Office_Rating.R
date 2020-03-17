@@ -46,7 +46,9 @@ data_fixed %>%
               col = 'white', 
               size = 2)+
   labs(x = 'Season', 
-       y = 'IMDB Rating')+
+       y = 'IMDB Rating', 
+       title = 'The Office ratings per season',
+       subtitle = 'Season 8 has lowest total ratings \nRatings become more variable across seasons')+
   scale_color_manual(values = pal)+
   # theme_classic()+
   theme_dark()+
@@ -56,4 +58,8 @@ data_fixed %>%
         axis.ticks = element_line(size = 1), 
         axis.line = element_line(size = 1),
         legend.position = 'none',
-        panel.grid = element_blank())
+        panel.grid = element_blank(),
+        plot.title = element_text(face = 'bold', 
+                                  size = 18),
+        plot.subtitle = element_text(face = 'italic', 
+                                     size = 14))
