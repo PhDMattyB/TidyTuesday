@@ -63,3 +63,5 @@ data_fixed %>%
                                   size = 18),
         plot.subtitle = element_text(face = 'italic', 
                                      size = 14))
+ggsave(plot = last_plot(),
+       'Office_ratings.tiff')
