@@ -35,4 +35,5 @@ data_fixed %>%
               col = 'black')+
   labs(x = 'Season', 
        y = 'IMDB Rating')+
-  theme_classic()
+  theme_classic()+
+  theme()
