@@ -28,3 +28,6 @@ clean = data %>%
   group_by(year) %>% 
   arrange(year)
 
+map_sf = map_data('state', 
+                  region = 'california')
+
