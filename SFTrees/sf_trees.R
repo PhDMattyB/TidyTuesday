@@ -6,7 +6,7 @@
 ## 2020-03-26
 ##
 ##############################
-dir.create('~/PhD/GitHub/TidyTuesday/SFTrees')
+# dir.create('~/PhD/GitHub/TidyTuesday/SFTrees')
 
 setwd('~/PhD/GitHub/TidyTuesday/SFTrees/')
 
@@ -20,5 +20,11 @@ clean = data %>%
   select(-dbh, -plot_size) %>% 
   na.omit
 
-View(clean)
+# 
+# clean %>% 
+#   separate(col = species, 
+#            into = c('latin', 'common'), 
+#            sep = "::") %>% 
+#   select(-latin) %>% 
+#   select(common) 
 
