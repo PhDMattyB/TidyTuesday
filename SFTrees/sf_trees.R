@@ -18,13 +18,13 @@ data = read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/m
 
 clean = data %>% 
   select(-dbh, -plot_size) %>% 
-  na.omit
-
-# 
-# clean %>% 
-#   separate(col = species, 
-#            into = c('latin', 'common'), 
-#            sep = "::") %>% 
-#   select(-latin) %>% 
-#   select(common) 
+  na.omit() %>% 
+  # select(date) %>% 
+  separate(date,
+           into = c('year', 
+                    'month', 
+                    'day'), 
+           sep = "-") %>% 
+  group_by(year) %>% 
+  arrange(year)
 
