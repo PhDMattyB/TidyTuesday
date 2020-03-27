@@ -24,12 +24,15 @@ test = left_join(age,
                  year, 
                  by = c('injury_mechanism', 
                                    'type',
-                        'number_est', 
+                        'number_est',
                         'rate_est'))
-test %>% 
-  select(type) %>% 
-  View()
 
-age_year = test %>% 
-  group_by(age_group,
-           injury_mechanism)
+test %>% 
+  # group_by(age_group,
+  #          type) %>% 
+  ggplot(aes(x = injury_mechanism, 
+         y = rate_est))+
+  geom_boxplot()
+  # geom_bar(aes(col = age_group,
+  #              fill = age_group))
+  # geom_violin(aes(col = age_group))
