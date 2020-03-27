@@ -20,4 +20,10 @@ age = read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/ma
 year = read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-24/tbi_year.csv')
 military = read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-24/tbi_military.csv')
 
-
+year %>% 
+  mutate(type = ifelse(str_detect(type, 'Emer'), 
+                       'ER visits', type),
+         type = factor(type, levels = c('ER visits',
+                                        'Hospitalizations',
+                                        'Deaths'))) %>% 
+  group_by(type)
