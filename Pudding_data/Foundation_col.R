@@ -40,39 +40,45 @@ shades = df$allShades %>%
 numbers = df$allNumbers 
 
 
-cat = df$allCategories %>% 
+## Start with the category data set
+## this one looks the most interesting
+cat_df = df$allCategories %>% 
   dplyr::select(brand, 
                 product, 
                 name, 
                 categories, 
-                lightness)
+                lightness) %>% 
+  separate(col = categories, 
+           paste0('category', 
+                 1:3), 
+           sep = ',', 
+           extra = 'drop') %>% 
+  group_by(category1)
 
-## Step 1: data cleaning
-## combine ulta and sephora data
+## Check which ones are common and which ones are not
+cat_df %>% 
+  count(category1) %>% 
+  arrange(n)
 
-clean_df = full_join(ulta, 
-          seph, 
-          by = c('brand', 
-                 'product', 
-                 'description', 
-                 'name')) %>% 
-  left_join(cat, 
-            by = c('brand', 
-                   'product')) %>%
-  left_join(numbers, 
-            by = c('brand', 
-                   'product')) %>% 
-  dplyr::select(brand, 
-                product, 
-                description, 
-                name.x, 
-                categories, 
-                lightness.x, 
-                lightToDark) 
-  # distinct(product, 
-  #          .keep_all = TRUE)
+## quick summary stats
+min(cat_df$lightness)
+max(cat_df$lightness)
+mean(cat_df$lightness)
 
-lightdark = combo_df %>% 
-  na.omit()
+cat_sum_stats = cat_df %>% 
+  summarise(light_std = sd(lightness), 
+            light_var = var(lightness), 
+            light_min = min(lightness),
+            light_max = max(lightness),
+            light_mean = mean(lightness))
 
+cat_df %>% 
+  select(-category2, 
+         -category3) %>% 
+  ggplot(aes(x = category1, 
+             y = lightness)) +
+  # geom_point(aes(col = lightness))
+  geom_violin()+
+  geom_boxplot() %>% 
+  facet_grid()
 
