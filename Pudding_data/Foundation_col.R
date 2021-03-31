@@ -11,6 +11,7 @@
 library(tidyverse)
 library(tidytuesdayR)
 library(viridis)
+library(patchwork)
 
 ## Considering we're plotting this, set the theme once
 theme_set(theme_bw())
@@ -18,29 +19,6 @@ theme_set(theme_bw())
 ## Read in data
 df = tidytuesdayR::tt_load(2021, 
                            week = 14)
-
-
-ulta = df$ulta %>% 
-  dplyr::select(brand,
-                product, 
-                description, 
-                name, 
-                imgAlt, 
-                specific)
-
-seph = df$sephora %>% 
-  dplyr::select(brand, 
-                product, 
-                description, 
-                name, 
-                imgAlt, 
-                specific)
-
-shades = df$allShades %>% 
-  dplyr::select(brand, 
-                product, 
-                description)
-
 
 # Numbers dataset and plots -----------------------------------------------
 
@@ -136,8 +114,8 @@ pie_chart = light_scale_TF %>%
 #   distinct(brand)
 
 # Category data and plot --------------------------------------------------
-## Start with the category data set
-## this one looks the most interesting
+# lightness per category description --------------------------------------
+
 cat_df = df$allCategories %>% 
   dplyr::select(brand, 
                 product, 
@@ -167,7 +145,7 @@ cat_sum_stats = cat_df %>%
             light_mean = mean(lightness))
 
 
-cat_df %>% 
+plot1 = cat_df %>% 
   select(-category2, 
          -category3) %>%
   ggplot(aes(x = reorder(category1, lightness), 
@@ -195,8 +173,68 @@ cat_df %>%
         axis.text.x = element_text(size = 12,
                                    hjust = 1,
                                    angle = 45), 
-        axis.title.y = element_text(size = 14), 
+        # axis.title.y = element_text(size = 14), 
+        axis.title.y = element_blank(),
         axis.text.y = element_text(size = 12), 
         legend.position = 'none'
         )
   
+# Lightness per brand -----------------------------------------------------
+
+cat_df2 = df$allCategories %>%
+  select(brand, 
+         # product, 
+         name, 
+         lightness) %>% 
+  group_by(brand) %>% 
+  filter(brand %in% sum_stats$brand)
+
+
+sum_stats = cat_df2 %>% 
+  summarise(light_mean = mean(lightness), 
+            num = n()) %>% 
+  filter(num > 100)
+
+
+plot2 = cat_df2 %>% 
+  ggplot(aes(x = lightness, 
+             y = brand))+
+  geom_jitter(aes(col = lightness), 
+              width = 0.15, 
+              size = 1)+
+  geom_point(data = sum_stats, 
+             aes(x = light_mean, 
+                 y = brand), 
+             col = 'black', 
+             size = 4)+
+  geom_vline(xintercept = mean(cat_df2$lightness), 
+             linetype = 'solid', 
+             size = 1.5)+
+  xlim(0, 1.00)+
+  labs(x = 'Lightness', 
+       col = 'Lightness')+
+  scale_color_viridis(option = 'magma')+
+  theme(
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.text.y = element_text(size = 12), 
+    # axis.title.x = element_text(size = 14),
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(size = 12), 
+    legend.position = 'none'
+  )
+
+
+# combo and save ----------------------------------------------------------
+
+combo = plot2 + plot1
+
+ggsave('Tidy_Tues_plot.jpeg', 
+       path = '~/GitHub/TidyTuesday/Pudding_data/', 
+       plot = combo, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 25, 
+       height = 16)
