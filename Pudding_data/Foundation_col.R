@@ -144,3 +144,21 @@ ggsave('Tidy_Tues_plot.jpeg',
        units = 'cm', 
        width = 25, 
        height = 16)
+
+
+# Super pale --------------------------------------------------------------
+
+super_pale = df$allCategories %>% 
+  dplyr::select(brand, 
+                product, 
+                lightness) %>% 
+  filter(lightness > 0.98) %>% 
+  distinct(product, 
+           .keep_all = T)
+
+library(kableExtra)
+
+super_pale %>% 
+  kbl() %>% 
+  kable_styling() %>% 
+  save_kable('Super_pale_foundations.pdf')
