@@ -41,8 +41,99 @@ shades = df$allShades %>%
                 product, 
                 description)
 
+
+# Numbers dataset and plots -----------------------------------------------
+
+
 numbers = df$allNumbers 
 
+# light_scale_brand = numbers %>% 
+#   na.omit(lightToDark) %>% 
+#   distinct(brand, 
+#            product, 
+#            name, 
+#            .keep_all = T) %>% 
+#   group_by(brand) %>% 
+#   summarise(percent = n()) %>% 
+#   mutate(percent = percent/sum(percent)*100)
+
+light_scale_TF = numbers %>% 
+  na.omit(lightToDark) %>% 
+  distinct(brand, 
+           product, 
+           name, 
+           .keep_all = T) %>% 
+  group_by(lightToDark) %>% 
+  summarise(percent = n()) %>% 
+  mutate(percent = percent/sum(percent)*100) 
+
+light_scale_TF$lightToDark = gsub('TRUE', 
+                      'True - 92.3%', 
+                      light_scale_TF$lightToDark)
+
+light_scale_TF$lightToDark = gsub('FALSE', 
+                                  'False - 7.7%', 
+                                  light_scale_TF$lightToDark)
+
+no_light_scale = numbers %>% 
+  na.omit(lightToDark) %>% 
+  distinct(brand, 
+           product, 
+           name, 
+           .keep_all = T) %>% 
+  group_by(brand) %>% 
+  filter(lightToDark == FALSE) %>% 
+  distinct(brand)
+
+labels = light_scale_TF %>% 
+  arrange(desc(lightToDark)) %>% 
+  mutate(ypos = cumsum(percent) - 0.5*percent) %>% 
+  mutate(end = 2 * pi * cumsum(percent)/sum(percent), 
+         start = lag(end, 
+                     default = 0), 
+         middle = 0.5 * (start + end),  
+         hjust = ifelse(middle > pi, 1, 0), 
+         vjust = ifelse(middle < pi/2 | middle > 3 * pi/2, 0, 1))
+
+pie_pal = c('#F2637E',
+            '#0477BF')
+
+pie_chart = light_scale_TF %>% 
+  ggplot(aes(x = "", 
+             y = percent, 
+             fill = lightToDark))+
+  geom_bar(stat = 'identity', 
+           width = 1, 
+           color = 'white')+
+  coord_polar("y", 
+              start = 0)+
+  labs(fill = 'Light to Dark Scale')+
+  # geom_text(data = labels, 
+  #           aes(x = 1.05 * sin(middle), 
+  #               y = 1.05 * cos(middle), 
+  #               label = lightToDark, 
+  #               hjust = hjust, 
+  #               vjust = vjust))+
+  geom_text(data = labels,
+            aes(y = ypos,
+                label = lightToDark,
+                fontface = 'bold'),
+            color = 'black',
+            size = 3)+
+  scale_fill_manual(values = pie_pal)+
+  theme_void()+
+  theme(legend.position = 'none')
+
+
+# numbers %>% 
+#   na.omit(lightToDark) %>% 
+#   distinct(brand, 
+#            product, 
+#            name, 
+#            .keep_all = T) %>% 
+#   group_by(brand) %>% 
+#   filter(lightToDark == TRUE) %>% 
+#   distinct(brand)
 
 # Category data and plot --------------------------------------------------
 ## Start with the category data set
