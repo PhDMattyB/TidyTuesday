@@ -78,3 +78,11 @@ ggplot(us_map_data)+
         legend.title = element_text(size = 12, 
                                     face = 'bold'), 
         legend.text = element_text(size = 10))
+
+
+## ggsave
+
+ggsave('~/GitHub/TidyTuesday/USArrests/USArrests_plot.tiff', 
+       plot = last_plot(), 
+       dpi = 'retina', 
+       units = 'cm')
